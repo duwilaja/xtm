@@ -43,7 +43,11 @@ include 'inc.head.php';
     <div class="content">
       <div class="container">
 		<div class="row">
-			<div class="col-12"><button class="btn btn-primary" onclick="newticket();"><i class="fa fa-plus"></i></button></div>
+			<div class="col-2"><select id="fs" class="form-control"><option value="">All Status</option>
+								<?php echo options($o_status)?>
+								</select></div>
+			<div class="col-2"><button class="btn btn-primary" onclick="reloadtbl();"><i class="fa fa-search"></i></button></div>
+			<div class="col-8"><button class="btn btn-primary" style="float:right;" onclick="newticket();"><i class="fa fa-plus"></i></button></div>
 		</div>
 		<br />
 		<div class="row">
@@ -222,7 +226,7 @@ include 'inc.head.php';
 			  </div>
             </div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-warning" onclick="modal('Info','Under Construction....')">History</button>
+				<button type="button" class="btn btn-warning" onclick="modal('Sorry :(','Under Construction....')">History</button>
 				<button type="button" id="bdel" class="btn btn-danger hidden" onclick="confirmDelete();">Delete</button>
 				<button type="button" class="btn btn-primary" onclick="saveData();">Save</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -246,7 +250,8 @@ include 'inc.js.php';
 
 $tname="xtm_tickets";
 $cols="ticketno,calltime,customer,service,detail,status,lastnote,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
-
+$cseq="ticketno";
+$csrc="customer,service,detail";
 $where="";
 ?>
 
@@ -254,13 +259,21 @@ $where="";
 var mytbl, jvalidate,jvalidatex;
 $(document).ready(function(){
 	mytbl = $('#example').DataTable({
+		processing: true,
+		serverSide: true,
+		searching: true,
+		order: [[0,"desc"]],
 		ajax: {
 			type: 'POST',
-			url: 'datatablesall<?php echo $ext?>',
+			url: 'datatable<?php echo $ext?>',
 			data: function (d) {
 				d.cols= '<?php echo base64_encode($cols); ?>',
 				d.tname= '<?php echo base64_encode($tname); ?>',
 				d.where= '<?php echo base64_encode($where); ?>',
+				d.csrc= '<?php echo base64_encode($csrc); ?>',
+				d.cseq= '<?php echo base64_encode($cseq); ?>',
+				d.filtereq='status',
+				d.status=$('#fs').val(),
 				d.x= '<?php echo $mn?>'
 			}
 		}
@@ -277,9 +290,6 @@ $(document).ready(function(){
 			required : true
 		},
 		"detail" : {
-			required : true
-		},
-		"sale" : {
 			required : true
 		}
     }});
@@ -309,9 +319,6 @@ $(document).ready(function(){
 					return false;
 				}
 			}
-		},
-		"sale" : {
-			required : true
 		}
     }});
 	

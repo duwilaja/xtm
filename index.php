@@ -120,7 +120,7 @@ if($loggedin){
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Lupa Password</h4>
+              <h4 class="modal-title">Forgot Password</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -138,7 +138,7 @@ if($loggedin){
 				</form>
             </div>
 			<div class="modal-footer">
-              <button type="button" onclick="if($('#lp').valid()){modal('Reset Password','Sedang dalam pengembangan');}" class="btn btn-primary">Kirim</button>
+              <button type="button" onclick="if($('#lp').valid()){modal('Reset Password','Sedang dalam pengembangan');}" class="btn btn-primary">Send</button>
             </div>
           </div>	
           <!-- /.modal-content -->

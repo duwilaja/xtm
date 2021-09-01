@@ -110,19 +110,19 @@
 				
 			</ul>
           </li>
-		  <li class="nav-item has-treeview mingguan bulanan">
+		  <li class="nav-item has-treeview rpt-tick rpt-sum">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-excel"></i>
               <p>Reports <i class="fas fa-angle-left right"></i></p>
             </a>
 			<ul class="nav nav-treeview">
 				<li class="nav-item">
-					<a class="nav-link rsummary" href="rsummary<?php echo $ext?>">
+					<a class="nav-link rpt-sum" href="rsummary<?php echo $ext?>">
 						<i class="nav-icon fas fa-angle-right"></i><p>Summary</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link rticket" href="rtickets<?php echo $ext?>">
+					<a class="nav-link rpt-tick" href="rtickets<?php echo $ext?>">
 						<i class="nav-icon fas fa-angle-right"></i><p>Ticket</p>
 					</a>
 				</li>
