@@ -271,8 +271,7 @@ function sendDataFile(sv='DUM',f='#myf'){
 function randomColor(){
 	return "#"+(Math.random().toString(16)+"000000").slice(2, 8).toUpperCase();
 }
-function get(q,id){
-		
+function get(q,id){		
 		$.ajax({
 			type: 'POST',
 			url: 'data<?php echo $ext?>',
@@ -292,6 +291,165 @@ function get(q,id){
 				}
 		});
 }
+function pie(pieid,labelsdata,type='pie',legend=false,colors=[]){
+	//-------------
+  //- PIE CHART -
+  //-------------
+  // Get context with jQuery - using jQuery's .get() method.
+  var labels=[];
+  var data=[];
+  for(var i=0;i<labelsdata.length;i++){
+	  labels.push(labelsdata[i]['axis']);
+	  data.push(labelsdata[i]['data']);
+  }
+  if(colors.length==0){
+	  for(var x=0;x<labels.length;x++){
+		  colors.push(randomColor());
+	  }
+  }
+  
+    var pieChartCanvas = $(pieid).get(0).getContext('2d')
+    var pieData        = {
+      labels: labels,/*[
+          'Chrome', 
+          'IE',
+          'FireFox', 
+          'Safari', 
+      ],*/
+      datasets: [
+        {
+          data: data,//[700,500,400,600,300,100],
+          backgroundColor : colors,//['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        }
+      ]
+    }
+    var pieOptions     = {
+      legend: {
+        display: legend
+      },
+	  responsive: true,
+	  maintainAspectRatio: false
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var pieChart = new Chart(pieChartCanvas, {
+      type: type,
+      data: pieData,
+      options: pieOptions
+    })
+
+  //-----------------
+  //- END PIE CHART -
+  //-----------------
+  
+  return pieChart;
+}
+function series_dataset(datas,label,axis,type,color='',fill=false){
+	color=color==''?randomColor():color;
+	fill=type=='bar'?true:fill;
+	var data=[];
+	for(var x=0;x<axis.length;x++){ //// loop axis
+		for(var j=0;j<datas.length;j++){
+			var d=datas[j];
+			data.push(0);
+			if(d['label']==label && d['axis']==axis[x]){
+				data[j]=d['data'];
+			}
+		}
+	}
+	var output={
+		label: label,
+		data: data,
+		fill: fill,
+		backgroundColor: color,
+		borderColor: color,
+		borderWidth: 1
+	}
+	
+	return output;
+}
+function series_axis(array){
+	var flags = [], output = [], l = array.length, i;
+	for( i=0; i<l; i++) {
+		if( flags[array[i].axis]) continue;
+		flags[array[i].axis] = true;
+		output.push(array[i].axis);
+	}
+	return output;
+}
+function series(chrid,type,labels,axis,dataraw,legend=false,mix=false){
+	var datasets=[];
+	axis=axis.length==0?series_axis(dataraw):axis;
+	for(var i=0;i<labels.length;i++){
+		typ=type;
+		if(mix && (i+1)==labels.length){ typ=typ=='bar'?'line':'bar'; }
+		datasets.push(series_dataset(dataraw,labels[i],axis,typ));
+	}
+	
+	log(axis);
+	log(datasets);
+	
+	var ctx = $(chrid).get(0).getContext('2d');
+	var mixedChart = new Chart(ctx, {
+		type: type,
+		data: {
+			datasets: datasets,/*[{
+				label: 'SIUP',
+				data: siup,//[10, 20, 30, 40],
+				backgroundColor: randomColor()
+			}, {
+				label: 'NON SIUP',
+				data: nonsiup,//[20, 30, 10, 20],
+				backgroundColor: randomColor()
+			}, {
+				label: 'Total',
+				data: jumlah,//[50, 50, 50, 50],
+				borderColor: randomColor(),
+				fill: false,
+
+				// Changes this dataset to become a line
+				type: 'line'
+			}],*/
+			labels: axis//['January', 'February', 'March', 'April'] //nama pasar
+		},
+		options: {
+			legend: {
+				display: legend
+			},
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						callback: function(value, index, values) {
+							if(parseInt(value) >= 1000){
+                               return '' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            } else {
+                               return '' + value;
+                            }
+						}
+					}
+				}]
+			},
+			tooltips: {
+				  /*callbacks: {
+					  label: function(tooltipItem, data) {
+						  var value = tooltipItem.yLabel;
+							if(parseInt(value) >= 1000){
+                               return '' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            } else {
+                               return '' + value;
+                            }
+					  }
+				  }*/
+			  }
+		}
+	});
+	
+	return mixedChart;
+}
+
 <?php if(isset($mn)){?>
 $(".<?php echo $mn?>").addClass("menu-open active");
 <?php }?>

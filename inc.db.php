@@ -172,8 +172,25 @@ function crud($conn=null,$fcols='',$fvals='',$where=''){
 		}
 	}
 	if($msg==''){
-		$msg=$sv=='DEL'?"Data deleted":"Data saved";
-		$cod='200'; $t='Success';
+		$msg=$sv=='DEL'?"Data dihapus":"Data tersimpan";
+		$cod='200'; $t='Sukses';
 	}
 	return array($cod,$t,$msg);
+}
+
+function get_params($where,$conn,$params,$sign){
+	for($i=0;$i<count($params);$i++){
+		$param=post($params[$i],$conn);
+		if($param!=""){
+			switch($sign){
+				case "not in" : $param=implode("','",explode(",",$param));
+						$where=$where!=""?"$where and ".$params[$i]." $sign ('$param')":$params[$i]." $sign ('$param')"; break;
+				case "in" : $param=implode("','",explode(",",$param));
+						$where=$where!=""?"$where and ".$params[$i]." $sign ('$param')":$params[$i]." $sign ('$param')"; break;
+				case "like" : $where=$where!=""?"$where and ".$params[$i]." $sign '%$param%'":$params[$i]." $sign '%$param%'"; break;
+				default : $where=$where!=""?"$where and ".$params[$i]." $sign '$param'":$params[$i]." $sign '$param'"; break;
+			}
+		}
+	}
+	return $where;
 }
