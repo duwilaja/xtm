@@ -22,6 +22,9 @@ $serv=fetch_all($rs);
 $rs=exec_qry($conn,"select probid,probname from xtm_problems order by probname");
 $prob=fetch_all($rs);
 
+$rs=exec_qry($conn,"select user,name from xtm_users order by name");
+$usrs=fetch_all($rs);
+
 disconnect($conn);
 
 include 'inc.head.php';
@@ -65,6 +68,7 @@ include 'inc.head.php';
 					  <th>Detail</th>
 					  <th>Status</th>
 					  <th>Note</th>
+					  <th>AssignedTo</th>
 					  <th>UpdatedOn</th>
 					  <th>Updated By</th>
 					  <th>CreatedOn</th>
@@ -102,8 +106,9 @@ include 'inc.head.php';
 					<input type="hidden" name="mn" value="<?php echo $mn?>x" />
 					<input type="hidden" name="rowid" value="0" />
 					<input type="hidden" name="sv" value="NEW" />
-					<input type="hidden" name="cols" value="calltime,customer,service,detail" />
+					<input type="hidden" name="cols" value="calltime,customer,service,detail,assignedto" />
 					<input type="hidden" name="tname" value="xtm_tickets" />
+					<input type="hidden" name="assignedto" value="<?php echo $s_ID?>" />
 						<div class="form-group row">
 							<label class="col-form-label col-sm-4">Date/Time</label>
 							<div class="col-sm-8">
@@ -164,7 +169,7 @@ include 'inc.head.php';
 					<input type="hidden" name="mn" value="<?php echo $mn?>" />
 					<input type="hidden" id="rowid" name="rowid" value="0" />
 					<input type="hidden" id="sv" name="sv" />
-					<input type="hidden" name="cols" value="status,lastnote,problem,solution" />
+					<input type="hidden" name="cols" value="status,lastnote,problem,solution,assignedto" />
 					<input type="hidden" name="tname" value="xtm_tickets" />
 						<div class="form-group row">
 							<label class="col-form-label col-sm-2">Ticket#</label>
@@ -192,8 +197,14 @@ include 'inc.head.php';
 						</div>
 						<div class="form-group row">
 							<label class="col-form-label col-sm-2">Detail</label>
-							<div class="col-sm-10">
+							<div class="col-sm-4">
 								<textarea readonly class="form-control" id="detail" name="detail"></textarea>
+							</div>
+							<label class="col-form-label col-sm-2">AssignedTo</label>
+							<div class="col-sm-4">
+								<select class="form-control" id="assignedto" name="assignedto">
+								<?php echo options($usrs)?>
+								</select>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -249,10 +260,11 @@ include 'inc.head.php';
 include 'inc.js.php';
 
 $tname="xtm_tickets";
-$cols="ticketno,calltime,customer,service,detail,status,lastnote,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
+$cols="ticketno,calltime,customer,service,detail,status,lastnote,assignedto,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
 $cseq="ticketno";
 $csrc="customer,service,detail";
 $where="";
+if($s_ACCESS=='U'){$where="assignedto='$s_ID'";}
 ?>
 
 <script>

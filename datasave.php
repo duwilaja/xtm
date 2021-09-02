@@ -71,10 +71,10 @@ if($mn=='prob'){
 }
 
 if($mn=='ticket'){
-	$f=""; $v="";
-	$s=post("status"); $t=post('ticketno'); $n=post("lastnote");
-	if($s=='solved'){$f="solvedon";$v="now()";}
-	if($s=='closed'){$f="closedon";$v="now()";}
+	$f="lastupdate,updatedby"; $v="now(),'$s_ID'";
+	$s=post("status"); $t=post('ticketno'); $n=post("lastnote");//untuk history
+	if($s=='solved'){$f.=",solvedon";$v.=",now()";}
+	if($s=='closed'){$f.=",closedon";$v.=",now()";}
 	
 	$res=crud($conn,$f,$v);
 	$code=$res[0]; $ttl=$res[1]; $msgs=$res[2];

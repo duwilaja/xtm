@@ -21,7 +21,7 @@ switch($q){
 	case 'prob': $sql="select * from xtm_problems where rowid='$id'"; break;
 	case 'ticket': $sql="select * from xtm_tickets where rowid='$id'"; break;
 	
-	case 'homepie': $sql="select problem as axis,count(problem) as data from xtm_tickets group by label"; break;
+	case 'homepie': $sql="select problem as axis,count(problem) as data from xtm_tickets group by axis"; break;
 	case 'homewidget': $sql="select status as label,count(status) as data from xtm_tickets group by label"; break;
 	case 'homedaily': $sql="select 'Total' as label,date(calltime) as axis,count(rowid) as data from xtm_tickets 
 					group by label,axis order by label,axis desc limit 10"; break;

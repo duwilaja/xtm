@@ -63,6 +63,7 @@ include 'inc.head.php';
 					  <th>Detail</th>
 					  <th>Status</th>
 					  <th>Note</th>
+					  <th>AssignedTo</th>
 					  <th>UpdatedOn</th>
 					  <th>Updated By</th>
 					  <th>CreatedOn</th>
@@ -95,7 +96,7 @@ include 'inc.head.php';
 include 'inc.js.php';
 
 $tname="xtm_tickets";
-$cols="ticketno,calltime,customer,service,detail,status,lastnote,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
+$cols="ticketno,calltime,customer,service,detail,status,lastnote,assignedto,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
 
 $where="";
 ?>
