@@ -31,6 +31,7 @@ $o_grpby=array(
 	array(base64_encode("problem as label,count(rowid) as data"),"by problem"),
 	array(base64_encode("customer as label,count(rowid) as data"),"by customer"),
 	array(base64_encode("service as label,count(rowid) as data"),"by service"),
+	array(base64_encode("assignedto as label,count(rowid) as data"),"by user"),
 );
 $o_chart=array(
 	array('pie','pie'),
