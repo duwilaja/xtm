@@ -26,12 +26,12 @@ disconnect($conn);
 */
 
 $o_grpby=array(
-	array(base64_encode("status as label,count(rowid) as data"),"by status"),
-	array(base64_encode("date(calltime) as label,count(rowid) as data"),"by date"),
-	array(base64_encode("problem as label,count(rowid) as data"),"by problem"),
-	array(base64_encode("customer as label,count(rowid) as data"),"by customer"),
-	array(base64_encode("service as label,count(rowid) as data"),"by service"),
-	array(base64_encode("assignedto as label,count(rowid) as data"),"by user"),
+	array(base64_encode("status as label,count(rowid) as data"),"by status",base64_encode("status")),
+	array(base64_encode("date(calltime) as label,count(rowid) as data"),"by date",base64_encode("date(calltime)")),
+	array(base64_encode("problem as label,count(rowid) as data"),"by problem",base64_encode("problem")),
+	array(base64_encode("customer as label,count(rowid) as data"),"by customer",base64_encode("customer")),
+	array(base64_encode("service as label,count(rowid) as data"),"by service",base64_encode("service")),
+	array(base64_encode("assignedto as label,count(rowid) as data"),"by user",base64_encode("assignedto")),
 );
 $o_chart=array(
 	array('pie','pie'),
@@ -58,11 +58,11 @@ include 'inc.head.php';
     <div class="content">
       <div class="container">
 		<div class="row">
-			<div class="col-2"><label>From</label><input type="text" id="df" class="form-control datepicker"></div>
-			<div class="col-2"><label>To</label><input type="text" id="dt" class="form-control datepicker"></div>
-			<div class="col-2"><label>Grouping</label><select id="grpby" class="form-control"><?php echo options($o_grpby)?></select></div>
-			<div class="col-2"><label>Chart</label><select id="chart" class="form-control"><?php echo options($o_chart)?></select></div>
-			<div class="col-2">&nbsp;<br /><button class="btn btn-primary" onclick="reloadtbl();"><i class="fa fa-search"></i></button></div>
+			<div class="col-md-2"><label>From</label><input type="text" id="df" class="form-control datepicker"></div>
+			<div class="col-md-2"><label>To</label><input type="text" id="dt" class="form-control datepicker"></div>
+			<div class="col-md-2"><label>Grouping</label><select id="grpby" class="form-control"><?php echo options($o_grpby)?></select></div>
+			<div class="col-md-2"><label>Chart</label><select id="chart" class="form-control"><?php echo options($o_chart)?></select></div>
+			<div class="col-md-2">&nbsp;<br /><button class="btn btn-primary" onclick="reloadtbl();"><i class="fa fa-search"></i></button></div>
 		</div>
 		<br />
 		<div class="row">
@@ -118,13 +118,14 @@ include 'inc.head.php';
 include 'inc.js.php';
 
 $tname="xtm_tickets";
-$cols="ticketno,calltime,customer,service,detail,status,lastnote,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
+//$cols="ticketno,calltime,customer,service,detail,status,lastnote,lastupdate,updatedby,createdon,solvedon,MY_TIMEDIFF(calltime,solvedon) as st,closedon,MY_TIMEDIFF(calltime,closedon) as ct";
 $grpby="label";
 $where="";
 ?>
 
 <script>
 var mytbl, jvalidate, mych;
+var mygrp=<?php echo json_encode($o_grpby)?>;
 $(document).ready(function(){
 	mych=null;
 	
@@ -152,6 +153,7 @@ $(document).ready(function(){
 				d.grpby= '<?php echo base64_encode($grpby); ?>',
 				d.tname= '<?php echo base64_encode($tname); ?>',
 				d.where= '<?php echo base64_encode($where); ?>',
+				d.grpcol=getGrpCols(),
 				d.cols=$('#grpby').val(),
 				d.frange='date(calltime)',
 				d.ranges='df,dt',
@@ -192,6 +194,13 @@ function getchart(data){
 		case "line": mych=series('#my-chart','line',['Total'],[],datas); break;
 	}
 	
+}
+function getGrpCols(){
+	var r="";
+	for(var i=0;i<mygrp.length;i++){
+		if(mygrp[i][0]==$("#grpby").val()) r=mygrp[i][2];
+	}
+	return r;
 }
 </script>
 

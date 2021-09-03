@@ -43,9 +43,9 @@ include 'inc.head.php';
     <div class="content">
       <div class="container">
 		<div class="row">
-			<div class="col-2"><label>From</label><input type="text" id="df" class="form-control datepicker"></div>
-			<div class="col-2"><label>To</label><input type="text" id="dt" class="form-control datepicker"></div>
-			<div class="col-2">&nbsp;<br /><button class="btn btn-primary" onclick="reloadtbl();"><i class="fa fa-search"></i></button></div>
+			<div class="col-md-2"><label>From</label><input type="text" id="df" class="form-control datepicker"></div>
+			<div class="col-md-2"><label>To</label><input type="text" id="dt" class="form-control datepicker"></div>
+			<div class="col-md-2">&nbsp;<br /><button class="btn btn-primary" onclick="reloadtbl();"><i class="fa fa-search"></i></button></div>
 		</div>
 		<br />
 		<div class="row">
@@ -68,7 +68,9 @@ include 'inc.head.php';
 					  <th>Updated By</th>
 					  <th>CreatedOn</th>
 					  <th>SolvedOn</th>
+					  <th>SolvedTime</th>
 					  <th>ClosedOn</th>
+					  <th>ClosedTime</th>
 					</tr>
                 </thead>
                 <tbody>
@@ -96,13 +98,13 @@ include 'inc.head.php';
 include 'inc.js.php';
 
 $tname="xtm_tickets";
-$cols="ticketno,calltime,customer,service,detail,status,lastnote,assignedto,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
+$cols="ticketno,calltime,customer,service,detail,status,lastnote,assignedto,lastupdate,updatedby,createdon,solvedon,MY_TIMEDIFF(calltime,solvedon) as st,closedon,MY_TIMEDIFF(calltime,closedon) as ct";
 
 $where="";
 ?>
 
 <script>
-var mytbl, jvalidate,jvalidatex;
+var mytbl;
 $(document).ready(function(){
 	
 	$(".datepicker").daterangepicker({
@@ -143,55 +145,6 @@ $(document).ready(function(){
             }
 	});
 	
-	jvalidatex = $("#myfx").validate({
-    rules :{
-        "customer" : {
-            required : true
-        },
-		"calltime" : {
-			required : true
-		},
-		"service" : {
-			required : true
-		},
-		"detail" : {
-			required : true
-		},
-		"sale" : {
-			required : true
-		}
-    }});
-	jvalidate = $("#myf").validate({
-    rules :{
-        "lastnote" : {
-            required : true
-        },
-		"status" : {
-			required : true,
-			equals : ["progress","pending","solved","closed"]
-		},
-		"problem" : {
-			required : function(){
-				if($("#status").val()=='solved'||$("#status").val()=='closed'){
-					return true;
-				}else{
-					return false;
-				}
-			}
-		},
-		"solution" : {
-			required : function(){
-				if($("#status").val()=='solved'||$("#status").val()=='closed'){
-					return true;
-				}else{
-					return false;
-				}
-			}
-		},
-		"sale" : {
-			required : true
-		}
-    }});
 	
 });
 function reloadtbl(){

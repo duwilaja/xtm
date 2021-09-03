@@ -57,3 +57,7 @@ function breadcrumb($breadcrumb,$sep="/"){
 	$ret.='</ol>';
 	return $ret;
 }
+function sec_to_dhms($seconds){
+	$s = (int)$seconds;
+    return sprintf('%d days %02d:%02d:%02d', $s/86400, $s/3600%24, $s/60%60, $s%60);
+}

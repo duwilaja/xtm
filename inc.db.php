@@ -172,8 +172,8 @@ function crud($conn=null,$fcols='',$fvals='',$where=''){
 		}
 	}
 	if($msg==''){
-		$msg=$sv=='DEL'?"Data dihapus":"Data tersimpan";
-		$cod='200'; $t='Sukses';
+		$msg=$sv=='DEL'?"Data deleted":"Data saved";
+		$cod='200'; $t='Success';
 	}
 	return array($cod,$t,$msg);
 }
