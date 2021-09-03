@@ -46,11 +46,11 @@ include 'inc.head.php';
     <div class="content">
       <div class="container">
 		<div class="row">
-			<div class="col-2"><select id="fs" class="form-control"><option value="">All Status</option>
+			<div class="col-md-2"><select id="fs" class="form-control"><option value="">All Status</option>
 								<?php echo options($o_status)?>
 								</select></div>
-			<div class="col-2"><button class="btn btn-primary" onclick="reloadtbl();"><i class="fa fa-search"></i></button></div>
-			<div class="col-8"><button class="btn btn-primary" style="float:right;" onclick="newticket();"><i class="fa fa-plus"></i></button></div>
+			<div class="col-md-2"><button class="btn btn-primary" onclick="reloadtbl();"><i class="fa fa-search"></i></button></div>
+			<div class="col-md-8"><button class="btn btn-primary" style="float:right;" onclick="newticket();"><i class="fa fa-plus"></i></button></div>
 		</div>
 		<br />
 		<div class="row">
@@ -143,8 +143,8 @@ include 'inc.head.php';
 			  </div>
             </div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" onclick="saveDatax();">Simpan</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+				<button type="button" class="btn btn-primary" onclick="saveDatax();">Save</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
           </div>
           <!-- /.modal-content -->
@@ -197,8 +197,14 @@ include 'inc.head.php';
 						</div>
 						<div class="form-group row">
 							<label class="col-form-label col-sm-2">Detail</label>
-							<div class="col-sm-4">
+							<div class="col-sm-10">
 								<textarea readonly class="form-control" id="detail" name="detail"></textarea>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-sm-2">Latest Note</label>
+							<div class="col-sm-4">
+								<textarea readonly class="form-control" id="lastnote" name="not"></textarea>
 							</div>
 							<label class="col-form-label col-sm-2">AssignedTo</label>
 							<div class="col-sm-4">
@@ -237,9 +243,48 @@ include 'inc.head.php';
 			  </div>
             </div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-warning" onclick="modal('Sorry :(','Under Construction....')">History</button>
+				<button type="button" class="btn btn-warning" onclick="openHistory();">History</button>
 				<button type="button" id="bdel" class="btn btn-danger hidden" onclick="confirmDelete();">Delete</button>
 				<button type="button" class="btn btn-primary" onclick="saveData();">Save</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+	  
+	  <div class="modal fade" id="modal_history">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title history"></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card">
+				<div class="card-body table-responsive">
+					
+					<table id="examplex" class="table table-bordered table-stripped table-hover">
+					<thead>
+						<tr>
+						  <th>Date/Time</th>
+						  <th>Note</th>
+						  <th>Status</th>
+						  <th>Updated By</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+					</table>
+					
+				</div>
+			  </div>
+            </div>
+			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
           </div>
@@ -268,7 +313,7 @@ if($s_ACCESS=='U'){$where="assignedto='$s_ID'";}
 ?>
 
 <script>
-var mytbl, jvalidate,jvalidatex;
+var mytbl, mytblx, jvalidate, jvalidatex;
 $(document).ready(function(){
 	mytbl = $('#example').DataTable({
 		processing: true,
@@ -284,12 +329,32 @@ $(document).ready(function(){
 				d.where= '<?php echo base64_encode($where); ?>',
 				d.csrc= '<?php echo base64_encode($csrc); ?>',
 				d.cseq= '<?php echo base64_encode($cseq); ?>',
-				d.filtereq='status',
+				d.filtereq='<?php echo base64_encode("status"); ?>',
 				d.status=$('#fs').val(),
 				d.x= '<?php echo $mn?>'
 			}
 		}
 	});
+	mytblx = $('#examplex').DataTable({
+		processing: true,
+		serverSide: true,
+		searching: true,
+		order: [[0,"desc"]],
+		ajax: {
+			type: 'POST',
+			url: 'datatable<?php echo $ext?>',
+			data: function (d) {
+				d.cols= '<?php echo base64_encode("updatedon,lastnote,status,updatedby"); ?>',
+				d.tname= '<?php echo base64_encode("xtm_notes"); ?>',
+				d.where= '<?php echo base64_encode(""); ?>',
+				d.csrc= '<?php echo base64_encode(""); ?>',
+				d.filtereq= '<?php echo base64_encode("ticketno"); ?>',
+				d.ticketno=$("#ticketno").val(),
+				d.x= '-'
+			}
+		}
+	});
+	
 	jvalidatex = $("#myfx").validate({
     rules :{
         "customer" : {
@@ -358,6 +423,12 @@ function saveDatax(f="#myfx"){
 	if($(f).valid()){
 		sendDataFile("NEW",f);
 	}
+}
+function openHistory(){
+	$(".history").text("Ticket# : "+$("#ticketno").val());
+	$("#modal_history").modal("show");
+	$("#examplex").css("width","100%");
+	mytblx.ajax.reload();
 }
 </script>
 

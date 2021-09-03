@@ -4,7 +4,7 @@ $restrict_grp=array("S");
 include 'inc.common.php';
 include 'inc.session.php';
 
-$ptitle="Pengguna";
+$ptitle="Users";
 $mn="user";
 
 $breadcrumb="Home/$ptitle";
@@ -111,7 +111,7 @@ include 'inc.head.php';
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-form-label col-sm-4">Password</label>
+							<label class="col-form-label col-sm-4">Set Password</label>
 							<div class="col-sm-8">
 								<input type="password" class="form-control" id="fpasswd" name="fpasswd" placeholder="" />
 							</div>
@@ -122,9 +122,9 @@ include 'inc.head.php';
 			  </div>
             </div>
 			<div class="modal-footer">
-				<button type="button" id="bdel" class="btn btn-danger hidden" onclick="confirmDelete();">Hapus</button>
-				<button type="button" class="btn btn-primary" onclick="saveData();">Simpan</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+				<button type="button" id="bdel" class="btn btn-danger hidden" onclick="confirmDelete();">Delete</button>
+				<button type="button" class="btn btn-primary" onclick="saveData();">Save</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
           </div>
           <!-- /.modal-content -->

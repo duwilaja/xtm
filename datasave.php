@@ -72,12 +72,18 @@ if($mn=='prob'){
 
 if($mn=='ticket'){
 	$f="lastupdate,updatedby"; $v="now(),'$s_ID'";
-	$s=post("status"); $t=post('ticketno'); $n=post("lastnote");//untuk history
+	$s=post("status"); $n=post("lastnote");
 	if($s=='solved'){$f.=",solvedon";$v.=",now()";}
 	if($s=='closed'){$f.=",closedon";$v.=",now()";}
 	
 	$res=crud($conn,$f,$v);
 	$code=$res[0]; $ttl=$res[1]; $msgs=$res[2];
+	if($code=='200'){
+		//save history
+		$sql=sql_insert("xtm_notes","ticketno,lastnote,status",$conn,"updatedon,updatedby","now(),'$s_ID'");
+		$rs=exec_qry($conn,$sql);
+		if(db_error($conn)!=""){ $msgs="Failed saving history";}
+	}
 }
 if($mn=='ticketx'){
 	$tn=date("YmdHis");

@@ -26,8 +26,8 @@ if($x==""){
 $where=base64_decode(post("where",$conn));
 $tname=base64_decode(post("tname",$conn));
 $cols=base64_decode(post("cols",$conn));
-$csrc=base64_decode(post("csrc",$conn));
-$cseq=base64_decode(post("cseq",$conn));
+$csrc=base64_decode(post("csrc",$conn)); //global search like
+$cseq=base64_decode(post("cseq",$conn)); //global search equal
 
 $grpcol=base64_decode(post("grpcol",$conn));
 $grpby=base64_decode(post("grpby",$conn));
@@ -37,16 +37,16 @@ $having=base64_decode(post("having",$conn));
 $having=$having!=""?" having $having":"";
 
 //filters
-$where=get_params($where,$conn,explode(",",post("filtereq")),"=");
-$where=get_params($where,$conn,explode(",",post("filtergt")),">");
-$where=get_params($where,$conn,explode(",",post("filtergteq")),">=");
-$where=get_params($where,$conn,explode(",",post("filterlt")),"<");
-$where=get_params($where,$conn,explode(",",post("filterlteq")),"<=");
-$where=get_params($where,$conn,explode(",",post("filterlike")),"like");
-$where=get_params($where,$conn,explode(",",post("filterin")),"in");
-$where=get_params($where,$conn,explode(",",post("filternotin")),"not in");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filtereq",$conn))),"=");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filtergt",$conn))),">");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filtergteq",$conn))),">=");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filterlt",$conn))),"<");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filterlteq",$conn))),"<=");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filterlike",$conn))),"like");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filterin",$conn))),"in");
+$where=get_params($where,$conn,explode(",",base64_decode(post("filternotin",$conn))),"not in");
 
-//specific param with col modif
+//specific param with col modif //todo more than 1 range in 1 page
 $ranges=explode(",",post("ranges"));
 $frange=post("frange");
 if(count($ranges)>1){
