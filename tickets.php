@@ -64,6 +64,8 @@ include 'inc.head.php';
 					  <th>Ticket#</th>
 					  <th>Date/Time</th>
 					  <th>Customer</th>
+					  <th>PIC</th>
+					  <th>Phone</th>
 					  <th>Service</th>
 					  <th>Detail</th>
 					  <th>Status</th>
@@ -106,7 +108,7 @@ include 'inc.head.php';
 					<input type="hidden" name="mn" value="<?php echo $mn?>x" />
 					<input type="hidden" name="rowid" value="0" />
 					<input type="hidden" name="sv" value="NEW" />
-					<input type="hidden" name="cols" value="calltime,customer,service,detail,assignedto" />
+					<input type="hidden" name="cols" value="calltime,customer,service,detail,assignedto,phone,pic" />
 					<input type="hidden" name="tname" value="xtm_tickets" />
 					<input type="hidden" name="assignedto" value="<?php echo $s_ID?>" />
 						<div class="form-group row">
@@ -137,6 +139,18 @@ include 'inc.head.php';
 								<textarea class="form-control" id="detailx" name="detail"></textarea>
 							</div>
 						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-sm-4">PIC</label>
+							<div class="col-sm-8">
+								<input type="text" name="pic" id="picx" class="form-control" placeholder="" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-sm-4">Phone</label>
+							<div class="col-sm-8">
+								<input type="text" name="phone" id="phonex" class="form-control" placeholder="" />
+							</div>
+						</div>
 						
 					</form>
 				</div>
@@ -154,7 +168,7 @@ include 'inc.head.php';
       <!-- /.modal -->
 	  
 	  <div class="modal fade" id="modal_data">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title"><?php echo $ptitle?></h4>
@@ -169,7 +183,7 @@ include 'inc.head.php';
 					<input type="hidden" name="mn" value="<?php echo $mn?>" />
 					<input type="hidden" id="rowid" name="rowid" value="0" />
 					<input type="hidden" id="sv" name="sv" />
-					<input type="hidden" name="cols" value="status,lastnote,problem,solution,assignedto" />
+					<input type="hidden" name="cols" value="status,lastnote,problem,solution,assignedto,pic,phone" />
 					<input type="hidden" name="tname" value="xtm_tickets" />
 						<div class="form-group row">
 							<label class="col-form-label col-sm-2">Ticket#</label>
@@ -197,14 +211,22 @@ include 'inc.head.php';
 						</div>
 						<div class="form-group row">
 							<label class="col-form-label col-sm-2">Detail</label>
-							<div class="col-sm-10">
+							<div class="col-sm-4">
 								<textarea readonly class="form-control" id="detail" name="detail"></textarea>
 							</div>
-						</div>
-						<div class="form-group row">
 							<label class="col-form-label col-sm-2">Latest Note</label>
 							<div class="col-sm-4">
 								<textarea readonly class="form-control" id="lastnote" name="not"></textarea>
+							</div>
+							
+						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-sm-2">PIC/Phone</label>
+							<div class="col-sm-2">
+								<input type="text" name="pic" id="pic" class="form-control" placeholder="" />
+							</div>
+							<div class="col-sm-2">
+								<input type="text" name="phone" id="phone" class="form-control" placeholder="" />
 							</div>
 							<label class="col-form-label col-sm-2">AssignedTo</label>
 							<div class="col-sm-4">
@@ -305,7 +327,7 @@ include 'inc.head.php';
 include 'inc.js.php';
 
 $tname="xtm_tickets";
-$cols="ticketno,calltime,customer,service,detail,status,lastnote,assignedto,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
+$cols="ticketno,calltime,customer,pic,phone,service,detail,status,lastnote,assignedto,lastupdate,updatedby,createdon,solvedon,closedon,rowid";
 $cseq="ticketno";
 $csrc="customer,service,detail";
 $where="";

@@ -158,7 +158,7 @@ function getwidget(){
 			}
 	});
 }
-function getpie(){		
+function getpie(){	
 	$.ajax({
 		type: 'POST',
 		url: 'data<?php echo $ext?>',
@@ -172,7 +172,7 @@ function getpie(){
 			}
 	});
 }
-function getdaily(){		
+function getdaily(){
 	$.ajax({
 		type: 'POST',
 		url: 'data<?php echo $ext?>',
