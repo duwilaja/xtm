@@ -41,6 +41,9 @@ include 'inc.head.php';
 					<tr>
 					  <th>ID</th>
 					  <th>Name</th>
+					  <th>PIC</th>
+					  <th>Phone</th>
+					  <th>Mail</th>
 					</tr>
                 </thead>
                 <tbody>
@@ -73,7 +76,7 @@ include 'inc.head.php';
 					<input type="hidden" name="mn" value="<?php echo $mn?>" />
 					<input type="hidden" id="rowid" name="rowid" value="0" />
 					<input type="hidden" id="sv" name="sv" />
-					<input type="hidden" name="cols" value="custname,custid" />
+					<input type="hidden" name="cols" value="custname,custid,pic,phone,mail" />
 					<input type="hidden" name="tname" value="xtm_customers" />
 					
 						<div class="form-group row">
@@ -86,6 +89,24 @@ include 'inc.head.php';
 							<label class="col-form-label col-sm-4">Name</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" id="custname" name="custname" placeholder="" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-sm-4">PIC</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="pic" name="pic" placeholder="" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-sm-4">Phone</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="phone" name="phone" placeholder="" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-sm-4">Mail</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="mail" name="mail" placeholder="" />
 							</div>
 						</div>
 						
@@ -116,7 +137,7 @@ include 'inc.head.php';
 include 'inc.js.php';
 
 $tname="xtm_customers";
-$cols="custid,custname,rowid";
+$cols="custid,custname,pic,phone,mail,rowid";
 ?>
 
 <script>

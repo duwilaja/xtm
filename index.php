@@ -5,7 +5,7 @@ $user=post('user');
 $passwd=post('passwd');
 $loggedin=false;
 $m=get('m');
-$x=get('x')==''?'App':get('x');
+$x=get('x')==''?$app:get('x');
 $footer=false;
 
 if($user!=''&&$passwd!=''){
@@ -20,6 +20,8 @@ if($user!=''&&$passwd!=''){
 		$_SESSION['s_ACCESS'] = $row[2];
 		
 		$loggedin=true;
+	}else{
+		$m="Wrong user/password";
 	}
 	disconnect($conn);
 }
